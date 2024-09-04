@@ -16,7 +16,7 @@ VOC = 0.4  # ppm
 u0 = [0.1] # ppm
 
 # Defining the complex term f(t, [O3])
-f(t, O3) = α * sin(β*t) * (O3 - γ)^2
+f(t, O3) = α * (β*t) * (O3 - γ)^2
 
 # Defining the ODE function
 function ozone_ode!(du, u, p, t)
@@ -30,10 +30,10 @@ tspan = (0.0, Float64(N_days))
 datasize = N_days
 t = range(tspan[1],tspan[2],length=datasize)
 
-prob = ODEProblem(ozone_ode!, u0, tspan, p0)
+prob = ODEProblem(ozone_ode!, u0, tspan)
 
 # Solve the ODE
-sol = Array(solve(prob, Tsit5(), u0=u0, p=p0, saveat=t))  
+sol = Array(solve(prob, Tsit5(), u0=u0, saveat=t))  
 
 # Ploting the results
 O3 = sol[1,:]
